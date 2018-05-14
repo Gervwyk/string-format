@@ -1,4 +1,8 @@
-# string-format
+# string-format-method-params
+
+THIS MODULES IS A FORK OF THE GREAT `string-format` MODULE.
+RATHER USE THE ORIGINAL REPO https://github.com/davidchambers/string-format
+UNLESS YOU REALLY FEEL LIKE PASSING PARAMETERS TO METHODS.
 
 string-format is a small JavaScript library for formatting strings, based on
 Python's [`str.format()`][1]. For example:

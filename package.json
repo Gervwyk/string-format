@@ -1,20 +1,20 @@
 {
-  "name": "string-format",
+  "name": "string-format-method-params",
   "version": "1.0.0",
-  "description": "String formatting inspired by Python's str.format()",
-  "author": "David Chambers <dc@davidchambers.me>",
+  "description": "String formatting inspired by Python's str.format() with a little twist for passing of parametes to methods",
+  "author": "gervwyk <gervwyk@gmail.com>",
   "keywords": [
     "string",
     "formatting",
     "language",
     "util"
   ],
-  "homepage": "https://github.com/davidchambers/string-format",
-  "bugs": "https://github.com/davidchambers/string-format/issues",
+  "homepage": "https://github.com/gervwyk/string-format",
+  "bugs": "https://github.com/gervwyk/string-format/issues",
   "license": "WTFPL OR MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/davidchambers/string-format.git"
+    "url": "git://github.com/gervwyk/string-format.git"
   },
   "files": [
     "LICENSE",
