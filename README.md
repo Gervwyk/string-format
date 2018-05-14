@@ -157,6 +157,15 @@ const sheldon = {
 // => "I've always wanted to go to a goth club. BAZINGA!"
 ```
 
+Parameters can also be passed to the methods like so:
+```javascript
+"The 2-4 subtring of aabbcc is {0.substring(2,4)}.".format('aabbcc')
+// => 'The 2-4 subtring of aabbcc is bb.'
+
+"When you round 1.567 to the first decimal you get {0.toFixed(1)}".format(1.567)
+// => 'When you round 1.567 to the first decimal you get 1.6'
+```
+
 ### `format.create(transformers)`
 
 This function takes an object mapping names to transformers and returns a

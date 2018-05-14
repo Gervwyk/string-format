@@ -83,6 +83,12 @@ suite('format', function() {
     eq(format('{quip.toUpperCase}', {quip: function() { return 'Bazinga!'; }}), 'BAZINGA!');
   });
 
+  test('invokes methods with parameters A', function() {
+    eq(format('{0.toFixed()}', 11.5789), '12');
+    eq(format('{0.toFixed(1)}', 11.5789), '11.6');
+    eq(format('{0.substring(2,4)}', 'aabbcc'), 'bb');
+  });
+
   test("passes applicable tests from Python's test suite", function() {
     eq(format(''), '');
     eq(format('abc'), 'abc');

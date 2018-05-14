@@ -57,6 +57,29 @@ void function(global) {
     };
   }
 
+  function splitParameters(parStr) {
+    if (parStr.charAt(parStr.length - 1) === ')'
+    && parStr.charAt(parStr.length - 2) === '(') {
+      return {key: parStr.replace('()', ''), pars: []};
+    } else if (/([()])\1|[(](.*?)(?:!(.+?))?[)]/g.test(parStr)) {
+      var pars = /([()])\1|[(](.*?)(?:!(.+?))?[)]/g.exec(parStr);
+      var _parStr = parStr.replace(pars[0], '');
+      pars = pars[2].split(',');
+      pars = pars.map(function(v) {
+        if (/^[.\d]+$/g.test(v)) {
+          return parseFloat(v);
+        } else if (/^'(\w+?)'$|^"(\w+?)"$/g.test(v)) {
+          return v.substring(1, v.length - 1);
+        } else {
+          return v;
+        }
+      });
+      return {key: _parStr, pars: pars};
+    } else {
+      return {key: parStr, pars: []};
+    }
+  }
+
   function lookup(_obj, _path) {
     var obj = _obj;
     var path = _path;
@@ -65,7 +88,10 @@ void function(global) {
     }
     for (var idx = 0; idx < path.length; idx += 1) {
       var key = path[idx];
-      obj = typeof obj[key] === 'function' ? obj[key]() : obj[key];
+      var v = splitParameters(key);
+      obj = typeof obj[v.key] === 'function' ?
+        obj[v.key].apply(obj, v.pars) :
+        obj[v.key];
     }
     return obj;
   }
