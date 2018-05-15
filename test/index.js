@@ -83,10 +83,15 @@ suite('format', function() {
     eq(format('{quip.toUpperCase}', {quip: function() { return 'Bazinga!'; }}), 'BAZINGA!');
   });
 
-  test('invokes methods with parameters A', function() {
+  test('invokes methods with parameters', function() {
     eq(format('{0.toFixed()}', 11.5789), '12');
     eq(format('{0.toFixed(1)}', 11.5789), '11.6');
     eq(format('{0.substring(2,4)}', 'aabbcc'), 'bb');
+  });
+
+  test('invoke polyfill date methods', function() {
+    eq(format('{0.getMonthName}', new Date('26 Apr 1984')), 'April');
+    eq(format('{0.getMonthNameShort}', new Date('26 Apr 1984')), 'Apr');
   });
 
   test("passes applicable tests from Python's test suite", function() {
