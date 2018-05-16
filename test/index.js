@@ -211,7 +211,40 @@ suite('format', function() {
       eq('Hello, Mr. {d.getFullYear}'.format({date: new Date()}), 'Hello, Mr. ');
       delete String.prototype.format;
     });
+  });
 
+  // extend to render good json object strings
+  suite('use to parse into json object strings', function() {
+
+    test('defines String.prototype.format to parse into object string - string', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{str: "{str}", s:"{str}"}'.format({str: 'abc'}), '{str: "abc", s:"abc"}');
+      delete String.prototype.format;
+    });
+
+    // for now we are assuming that stings must be placed in quotations to render as stings. In future, test the type and make it agnostic
+    test('defines String.prototype.format to parse into object string - string mixed quotes', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{str: {str}, s:"{str}"}'.format({str: 'abc'}), '{str: abc, s:"abc"}');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse into object string - number', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{num: {num}, n:{num}}'.format({num: 123.3}), '{num: 123.3, n:123.3}');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse into object string default to ISO String - date', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      var d = new Date();
+      eq('{d: {date}}'.format({date: d}), '{d: "' + d.toISOString() + '"}');
+      delete String.prototype.format;
+    });
 
   });
 

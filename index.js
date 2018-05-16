@@ -1,6 +1,8 @@
 void function(global) {
-
   'use strict';
+
+  var default_value_not_found_on_string_format = '';
+
   //  ValueError :: String -> Error
   function ValueError(message) {
     var err = new Error(message);
@@ -16,11 +18,17 @@ void function(global) {
   //  create :: Object -> String,*... -> String
   function create(transformers) {
     return function(template) {
+      var _template = template;
+      var jsonStr = false;
+      if (/^{\w+?:.+?}$/g.test(_template)) {
+        _template = _template.substring(1, _template.length - 1);
+        jsonStr = true;
+      }
+
       var args = Array.prototype.slice.call(arguments, 1);
       var idx = 0;
       var state = 'UNDEFINED';
-
-      return template.replace(
+      var returnStr = _template.replace(
         /([{}])\1|[{](.*?)(?:!(.+?))?[}]/g,
         function(match, literal, _key, xf) {
           if (literal != null) {
@@ -42,7 +50,10 @@ void function(global) {
             key = String(idx);
             idx += 1;
           }
-          var value = defaultTo('', lookup(args, key.split('.')));
+          var value = defaultTo(
+            default_value_not_found_on_string_format,
+            lookup(args, key.split('.'))
+          );
           if (xf == null) {
             return value;
           } else if (Object.prototype.hasOwnProperty.call(transformers, xf)) {
@@ -52,6 +63,7 @@ void function(global) {
           }
         }
       );
+      return !jsonStr ? returnStr : '{' + returnStr + '}';
     };
   }
 
@@ -87,9 +99,17 @@ void function(global) {
     for (var idx = 0; idx < path.length; idx += 1) {
       var key = path[idx];
       var v = splitParameters(key);
-      obj = typeof obj[v.key] === 'function' ?
-        obj[v.key].apply(obj, v.pars) :
-        obj[v.key] ? obj[v.key] : '';
+      if (idx === path.length - 1) {
+        obj = typeof obj[v.key] === 'function' ?
+          obj[v.key].apply(obj, v.pars) :
+          obj[v.key] instanceof Date ?
+          '"' + obj[v.key].toISOString() + '"' :
+          obj[v.key] ? obj[v.key] : default_value_not_found_on_string_format;
+      } else {
+        obj = typeof obj[v.key] === 'function' ?
+          obj[v.key].apply(obj, v.pars) :
+          obj[v.key] ? obj[v.key] : default_value_not_found_on_string_format;
+      }
     }
     return obj;
   }
