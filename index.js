@@ -1,27 +1,6 @@
 void function(global) {
 
   'use strict';
-  Date.prototype.getMonthName = function(lang) {
-    var l = lang && (lang in Date.locale) ? lang : 'en';
-    return Date.locale[l].month_names[this.getMonth()];
-  };
-
-  Date.prototype.getMonthNameShort = function(lang) {
-    var l = lang && (lang in Date.locale) ? lang : 'en';
-    return Date.locale[l].month_names_short[this.getMonth()];
-  };
-
-  Date.locale = {
-    en: {
-      month_names: ['January', 'February', 'March',
-                    'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'],
-      month_names_short: ['Jan', 'Feb', 'Mar',
-                          'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-                          'Oct', 'Nov', 'Dec']
-    }
-  };
-
   //  ValueError :: String -> Error
   function ValueError(message) {
     var err = new Error(message);
