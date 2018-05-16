@@ -43,7 +43,6 @@ void function(global) {
             idx += 1;
           }
           var value = defaultTo('', lookup(args, key.split('.')));
-
           if (xf == null) {
             return value;
           } else if (Object.prototype.hasOwnProperty.call(transformers, xf)) {
@@ -90,7 +89,7 @@ void function(global) {
       var v = splitParameters(key);
       obj = typeof obj[v.key] === 'function' ?
         obj[v.key].apply(obj, v.pars) :
-        obj[v.key];
+        obj[v.key] ? obj[v.key] : '';
     }
     return obj;
   }

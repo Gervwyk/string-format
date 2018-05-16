@@ -183,6 +183,36 @@ suite('format', function() {
       eq(prototype.format.call('Hello, {}!', 'Alice'), 'Hello, Alice!');
     });
 
+    test('defines String.prototype.format with object', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('Hello, {name}!'.format({name: 'Adam'}), 'Hello, Adam!');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format on undefined reference', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('Hello, Mr. {surname}!'.format({name: 'Adam'}), 'Hello, Mr. !');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format on reference with method', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      var d = new Date();
+      eq('We are in {date.getFullYear}'.format({date: d}), 'We are in ' + d.getFullYear());
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format on undefined reference with method', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('Hello, Mr. {d.getFullYear}'.format({date: new Date()}), 'Hello, Mr. ');
+      delete String.prototype.format;
+    });
+
+
   });
 
 });
