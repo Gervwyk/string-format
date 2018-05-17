@@ -24,7 +24,7 @@ void function(global) {
       var idx = 0;
       var state = 'UNDEFINED';
       return _template.replace(
-        /({})\1|[{](\S*?)(?:!(\S+?))?[}]/g,
+        /({})\1|[{](\S*?|\S*?\(['"].*?['"]\))(?:!(\S+?))?[}]/g,
         function(match, literal, _key, xf) {
           if (literal != null) {
             return literal;
@@ -72,7 +72,7 @@ void function(global) {
       pars = pars.map(function(v) {
         if (/^[.\d]+$/g.test(v)) {
           return parseFloat(v);
-        } else if (/^'(\w+?)'$|^"(\w+?)"$/g.test(v)) {
+        } else if (/^'(.*?)'$|^"(.*?)"$/g.test(v)) {
           return v.substring(1, v.length - 1);
         } else {
           return v;

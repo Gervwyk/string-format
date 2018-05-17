@@ -88,7 +88,7 @@ suite('format', function() {
     eq(format('{0.toFixed(1)}', 11.5789), '11.6');
     eq(format('{0.substring(2,4)}', 'aabbcc'), 'bb');
     eq(format('{0.concat("aa")}', 'bb'), 'bbaa');
-    eq(format("{0.concat('aa')}", 'bb'), 'bbaa');
+    eq(format("{0.concat('a a')}", 'bb'), 'bba a');
   });
 
   test("passes applicable tests from Python's test suite", function() {
