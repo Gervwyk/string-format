@@ -19,17 +19,12 @@ void function(global) {
   function create(transformers) {
     return function(template) {
       var _template = template;
-      var jsonStr = false;
-      if (/^{\w+?:.+?}$/g.test(_template)) {
-        _template = _template.substring(1, _template.length - 1);
-        jsonStr = true;
-      }
 
       var args = Array.prototype.slice.call(arguments, 1);
       var idx = 0;
       var state = 'UNDEFINED';
-      var returnStr = _template.replace(
-        /([{}])\1|[{](.*?)(?:!(.+?))?[}]/g,
+      return _template.replace(
+        /({})\1|[{](\S*?)(?:!(\S+?))?[}]/g,
         function(match, literal, _key, xf) {
           if (literal != null) {
             return literal;
@@ -63,7 +58,6 @@ void function(global) {
           }
         }
       );
-      return !jsonStr ? returnStr : '{' + returnStr + '}';
     };
   }
 
@@ -71,8 +65,8 @@ void function(global) {
     if (parStr.charAt(parStr.length - 1) === ')'
     && parStr.charAt(parStr.length - 2) === '(') {
       return {key: parStr.replace('()', ''), pars: []};
-    } else if (/([()])\1|[(](.*?)(?:!(.+?))?[)]/g.test(parStr)) {
-      var pars = /([()])\1|[(](.*?)(?:!(.+?))?[)]/g.exec(parStr);
+    } else if (/(\(\))\1|[(](.*?)?[)]/g.test(parStr)) {
+      var pars = /(\(\))\1|[(](.*?)?[)]/g.exec(parStr);
       var _parStr = parStr.replace(pars[0], '');
       pars = pars[2].split(',');
       pars = pars.map(function(v) {

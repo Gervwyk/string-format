@@ -119,8 +119,8 @@ A format string must not contain both implicit and explicit references:
 `{{` and `}}` in format strings produce `{` and `}`:
 
 ```javascript
-'{{}} creates an empty {} in {}'.format('dictionary', 'Python')
-// => '{} creates an empty dictionary in Python'
+'{ } creates an empty {} in {}'.format('dictionary', 'Python')
+// => '{ } creates an empty dictionary in Python'
 ```
 
 Dot notation may be used to reference object properties:
