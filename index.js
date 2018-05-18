@@ -19,12 +19,11 @@ void function(global) {
   function create(transformers) {
     return function(template) {
       var _template = template;
-
       var args = Array.prototype.slice.call(arguments, 1);
       var idx = 0;
       var state = 'UNDEFINED';
       return _template.replace(
-        /({})\1|[{](\S*?|\S*?\(['"].*?['"]\))(?:!(\S+?))?[}]/g,
+        /({})\1|[{](\S*?|\S*?\(.*?\))(?:!(\S+?))?[}]/g,
         function(match, literal, _key, xf) {
           if (literal != null) {
             return literal;
@@ -70,10 +69,10 @@ void function(global) {
       var _parStr = parStr.replace(pars[0], '');
       pars = pars[2].split(',');
       pars = pars.map(function(v) {
-        if (/^[.\d]+$/g.test(v)) {
+        if (/^[-.\d]+$/g.test(v)) {
           return parseFloat(v);
-        } else if (/^'(.*?)'$|^"(.*?)"$/g.test(v)) {
-          return v.substring(1, v.length - 1);
+        } else if (/^'(.*?)'$|^"(.*?)"$/g.test(v.trim())) {
+          return v.trim().substring(1, v.trim().length - 1);
         } else {
           return v;
         }
@@ -87,22 +86,23 @@ void function(global) {
   function lookup(_obj, _path) {
     var obj = _obj;
     var path = _path;
-    if (!/^\d+$/.test(path[0])) {
+    if (!/^[-\d]+$/.test(path[0])) {
       path = ['0'].concat(path);
     }
     for (var idx = 0; idx < path.length; idx += 1) {
       var key = path[idx];
       var v = splitParameters(key);
-      if (idx === path.length - 1) {
-        obj = typeof obj[v.key] === 'function' ?
-          obj[v.key].apply(obj, v.pars) :
-          obj[v.key] instanceof Date ?
-          '"' + obj[v.key].toISOString() + '"' :
-          obj[v.key] ? obj[v.key] : default_value_not_found_on_string_format;
+      if (typeof obj[v.key] === 'function') {
+        obj = obj[v.key].apply(obj, v.pars);
+      } else if (idx === path.length - 1 && obj[v.key] instanceof Date) {
+        obj = '"' + obj[v.key].toISOString() + '"';
+      } else if (/[-\d.]+/g.test(v.key) && parseFloat(v.key) < 0
+        && obj[obj.length + parseFloat(v.key)]) {
+        obj = obj[obj.length + parseFloat(v.key)];
+      } else if (obj[v.key]) {
+        obj = obj[v.key];
       } else {
-        obj = typeof obj[v.key] === 'function' ?
-          obj[v.key].apply(obj, v.pars) :
-          obj[v.key] ? obj[v.key] : default_value_not_found_on_string_format;
+        obj = default_value_not_found_on_string_format;
       }
     }
     return obj;

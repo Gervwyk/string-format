@@ -4,7 +4,6 @@ var assert = require('assert');
 
 var format = require('..');
 
-
 var eq = assert.strictEqual;
 
 function s(num) { return num === 1 ? '' : 's'; }
@@ -87,8 +86,16 @@ suite('format', function() {
     eq(format('{0.toFixed()}', 11.5789), '12');
     eq(format('{0.toFixed(1)}', 11.5789), '11.6');
     eq(format('{0.substring(2,4)}', 'aabbcc'), 'bb');
-    eq(format('{0.concat("aa")}', 'bb'), 'bbaa');
-    eq(format("{0.concat('a a')}", 'bb'), 'bba a');
+    eq(format('{0.substring(1, 3)}', 'aabbcc'), 'ab');
+    eq(format('{0.concat("1aa")}', 'bb'), 'bb1aa');
+    eq(format("{0.concat('2a a')}", 'bb'), 'bb2a a');
+    eq(format('{0.concat("3a b",  "c d")}', 'a'), 'a3a bc d');
+    eq(format('{0.concat( "4a b","c d")}', 'a'), 'a4a bc d');
+    eq(format('{0.concat("5a b","c d" )}', 'a'), 'a5a bc d');
+    eq(format('{0.concat( "6a b","c d" )}', 'a'), 'a6a bc d');
+    eq(format('{0.concat( "7a b", "c d" )}', 'a'), 'a7a bc d');
+    eq(format('{0.concat("8a b c d e")}', 'a'), 'a8a b c d e');
+    eq(format('{0.concat("9 new text").concat(" string")}', 'The'), 'The9 new text string');
   });
 
   test("passes applicable tests from Python's test suite", function() {
@@ -252,6 +259,27 @@ suite('format', function() {
       eq(typeof String.prototype.format, 'function');
       var d = new Date();
       eq('{d: {date}}'.format({date: d}), '{d: "' + d.toISOString() + '"}');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse 2 objects into string - number', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $num : {0.num}, n:{1.num}}'.format({num: 1111}, {num: 2222}), '{ $num : 1111, n:2222}');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse 2 objects into string negative counter -1 - number', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $num : {0.num}, n:{-1.num}}'.format({num: 1111}, {num: 2222}, {num: 3333}), '{ $num : 1111, n:3333}');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse 2 objects into string negative counter -2 - number', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $num : {0.num}, n:{-2.num}}'.format({num: 1111}, {num: 2222}, {num: 3333}), '{ $num : 1111, n:2222}');
       delete String.prototype.format;
     });
 
