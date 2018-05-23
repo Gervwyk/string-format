@@ -1,6 +1,6 @@
 {
   "name": "string-format-method-params",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "String formatting inspired by Python's str.format() with a little twist for passing of parametes to methods",
   "author": "gervwyk <gervwyk@gmail.com>",
   "keywords": [
