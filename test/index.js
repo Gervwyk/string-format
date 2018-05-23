@@ -85,6 +85,8 @@ suite('format', function() {
   test('invokes methods with parameters', function() {
     eq(format('{0.toFixed()}', 11.5789), '12');
     eq(format('{0.toFixed(1)}', 11.5789), '11.6');
+    eq(format('{0.toFixed(0)}', 0), '0');
+    eq(format('{0.toFixed(2)}', 0), '0.00');
     eq(format('{0.substring(2,4)}', 'aabbcc'), 'bb');
     eq(format('{0.substring(1, 3)}', 'aabbcc'), 'ab');
     eq(format('{0.concat("1aa")}', 'bb'), 'bb1aa');
@@ -242,7 +244,7 @@ suite('format', function() {
     test('defines String.prototype.format to parse into object string - number', function() {
       format.extend(String.prototype, {});
       eq(typeof String.prototype.format, 'function');
-      eq('{ $num : {num}, n:{num}}'.format({num: 123.3}), '{ $num : 123.3, n:123.3}');
+      eq('{ CSI1 : {CSI1}, n:{CSI1.toFixed(0)}}'.format({CSI1: 123.3}), '{ CSI1 : 123.3, n:123}');
       delete String.prototype.format;
     });
 

@@ -99,7 +99,7 @@ void function(global) {
       } else if (/[-\d.]+/g.test(v.key) && parseFloat(v.key) < 0
         && obj[obj.length + parseFloat(v.key)]) {
         obj = obj[obj.length + parseFloat(v.key)];
-      } else if (obj[v.key]) {
+      } else if (obj[v.key] || obj[v.key] === 0) {
         obj = obj[v.key];
       } else {
         obj = default_value_not_found_on_string_format;
