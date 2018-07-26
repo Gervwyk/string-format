@@ -1,5 +1,5 @@
 {
-  "name": "string-format-method-params",
+  "name": "string-format-patterns",
   "version": "1.5.1",
   "description": "String formatting inspired by Python's str.format() with a little twist for passing of parametes to methods",
   "author": "gervwyk <gervwyk@gmail.com>",
@@ -14,7 +14,7 @@
   "license": "WTFPL OR MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/gervwyk/string-format-method-params.git"
+    "url": "git://github.com/gervwyk/string-format.git"
   },
   "files": [
     "LICENSE",

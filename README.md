@@ -1,4 +1,4 @@
-# string-format-method-params
+# string-format-patterns
 
 THIS MODULES IS A FORK OF THE GREAT `string-format` MODULE.
 RATHER USE THE ORIGINAL REPO https://github.com/davidchambers/string-format
