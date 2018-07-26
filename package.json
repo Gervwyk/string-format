@@ -14,7 +14,7 @@
   "license": "WTFPL OR MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/gervwyk/string-format.git"
+    "url": "git://github.com/gervwyk/string-format-patterns.git"
   },
   "files": [
     "LICENSE",

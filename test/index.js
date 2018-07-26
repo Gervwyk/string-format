@@ -313,6 +313,13 @@ suite('format', function() {
       delete String.prototype.format;
     });
 
+    test('defines String.prototype.format to parse objects with array of strings into string', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $set: { email_status: {sent_status} } }'.format({'sent_status': ['1234', 'aaa', 'ccc']}), '{ $set: { email_status: ["1234","aaa","ccc"] } }');
+      delete String.prototype.format;
+    });
+
     test('defines String.prototype.format to parse array into string', function() {
       format.extend(String.prototype, {});
       eq(typeof String.prototype.format, 'function');
