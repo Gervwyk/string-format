@@ -285,6 +285,41 @@ suite('format', function() {
       delete String.prototype.format;
     });
 
+    test('defines String.prototype.format to parse objects with number into string', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $set: { email_status: {sent_status} } }'.format({'sent_status': {'a': 1234}}), '{ $set: { email_status: {"a":1234} } }');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse objects with float into string', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $set: { email_status: {sent_status} } }'.format({'sent_status': {'a': 12.34}}), '{ $set: { email_status: {"a":12.34} } }');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse objects with boolean into string', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $set: { email_status: {sent_status} } }'.format({'sent_status': {'a': true}}), '{ $set: { email_status: {"a":true} } }');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse objects with string into string', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $set: { email_status: {sent_status} } }'.format({'sent_status': {'a': '1234'}}), '{ $set: { email_status: {"a":"1234"} } }');
+      delete String.prototype.format;
+    });
+
+    test('defines String.prototype.format to parse array into string', function() {
+      format.extend(String.prototype, {});
+      eq(typeof String.prototype.format, 'function');
+      eq('{ $set: { email_status: {sent_status} } }'.format({'sent_status': [{'a': 1234}, {'b': 'abcd'}]}), '{ $set: { email_status: [{"a":1234},{"b":"abcd"}] } }');
+      delete String.prototype.format;
+    });
+
   });
 
 });

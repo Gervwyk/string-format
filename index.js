@@ -96,6 +96,9 @@ void function(global) {
         obj = obj[v.key].apply(obj, v.pars);
       } else if (idx === path.length - 1 && obj[v.key] instanceof Date) {
         obj = '"' + obj[v.key].toISOString() + '"';
+      } else if (idx === path.length - 1 &&
+        (obj[v.key] instanceof Object || obj[v.key] instanceof Array)) {
+        obj = JSON.stringify(obj[v.key]);
       } else if (/[-\d.]+/g.test(v.key) && parseFloat(v.key) < 0
         && obj[obj.length + parseFloat(v.key)]) {
         obj = obj[obj.length + parseFloat(v.key)];
