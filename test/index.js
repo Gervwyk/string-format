@@ -58,7 +58,7 @@ suite('format', function() {
     );
   });
 
-  test('treats "{{" and "}}" as "{" and "}"', function() {
+  test('treats formats into an object', function() {
     eq(format('{ {}: "{}" }', 'foo', 'bar'), '{ foo: "bar" }');
   });
 
@@ -98,6 +98,11 @@ suite('format', function() {
     eq(format('{0.concat( "7a b", "c d" )}', 'a'), 'a7a bc d');
     eq(format('{0.concat("8a b c d e")}', 'a'), 'a8a b c d e');
     eq(format('{0.concat("9 new text").concat(" string")}', 'The'), 'The9 new text string');
+  });
+
+  test('invokes methods with parameters and white space in field names', function() {
+    eq(format('{"one field name".toFixed()}', {'one field name': 11.5789}), '12');
+    eq(format("{'one field name'.toFixed()}", {'one field name': 11.5789}), '12');
   });
 
   test("passes applicable tests from Python's test suite", function() {

@@ -23,7 +23,7 @@ void function(global) {
       var idx = 0;
       var state = 'UNDEFINED';
       return _template.replace(
-        /({})\1|[{](\S*?|\S*?\(.*?\))(?:!(\S+?))?[}]/g,
+        /({})\1|[{](|\s*?[^\s{}]+?\s*?|\s*?\S+?\(.*?\)\s*?|\s*?['][^']+?[']\s*?|\s*?["][^"]+?["]\s*?|\s*?["][^"]+?["]\.\S+?\(.*?\)\s*?|\s*?['][^']+?[']\.\S+?\(.*?\)\s*?)(?:!(\S+?))?[}]/g, //            eslint-disable-line
         function(match, literal, _key, xf) {
           if (literal != null) {
             return literal;
@@ -86,9 +86,15 @@ void function(global) {
   function lookup(_obj, _path) {
     var obj = _obj;
     var path = _path;
+
     if (!/^[-\d]+$/.test(path[0])) {
       path = ['0'].concat(path);
     }
+    if (/^".*?"$|^'.*?'$/.test(path[1])) {
+      path[1] = path[1].slice(1, path[1].length - 1);
+    }
+    // console.log(obj); // eslint-disable-line no-undef
+    // console.log(path); // eslint-disable-line no-undef
     for (var idx = 0; idx < path.length; idx += 1) {
       var key = path[idx];
       var v = splitParameters(key);
